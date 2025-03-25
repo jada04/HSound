@@ -1,11 +1,16 @@
 # Node.js 20 içeren temel imaj
 FROM node:20
 
-# Gerekli sistem paketlerini kur: python3, pip ve ffmpeg
-RUN apt-get update && apt-get install -y python3 python3-pip ffmpeg
+# Gerekli sistem paketlerini kur: python3, pip, ffmpeg, build-essential, python3-dev
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    ffmpeg \
+    build-essential \
+    python3-dev
 
 # Pip'i python3 modülü üzerinden güncelle
-# RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install --upgrade pip
 
 # Çalışma dizinini oluştur
 WORKDIR /app
