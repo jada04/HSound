@@ -65,7 +65,8 @@ app.get('/play', async (req, res) => {
     }
     // stdout üzerinden audio URL'sini alıyoruz
     const audioUrl = stdout.trim();
-    console.log("Audio URL:", audioUrl);
+    // console.log("Audio URL:", audioUrl);
+    res.json(audioUrl);
   });
 
 
