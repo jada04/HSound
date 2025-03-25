@@ -54,7 +54,7 @@ app.get('/play', async (req, res) => {
   }
 
   
-  exec('python py.py', (error, stdout, stderr) => {
+  exec('python3 py.py', (error, stdout, stderr) => {
     if (error) {
       console.error(`Hata: ${error.message}`);
       return;
