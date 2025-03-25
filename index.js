@@ -1,7 +1,6 @@
 const express = require('express');
 const ytSearch = require('yt-search');
 const cors = require('cors');
-const ytdl = require('youtube-dl-exec');
 const { exec } = require('child_process');
 
 
