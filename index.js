@@ -53,21 +53,22 @@ app.get('/play', async (req, res) => {
     url = `https://www.youtube.com/watch?v=${url}`;
   }
 
+  res.json(url);
   
-  exec('python3 py.py', (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Hata: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.error(`stderr: ${stderr}`);
-      return;
-    }
-    // stdout üzerinden audio URL'sini alıyoruz
-    const audioUrl = stdout.trim();
-    // console.log("Audio URL:", audioUrl);
-    res.json(audioUrl);
-  });
+  // exec('python3 py.py', (error, stdout, stderr) => {
+  //   if (error) {
+  //     console.error(`Hata: ${error.message}`);
+  //     return;
+  //   }
+  //   if (stderr) {
+  //     console.error(`stderr: ${stderr}`);
+  //     return;
+  //   }
+  //   // stdout üzerinden audio URL'sini alıyoruz
+  //   const audioUrl = stdout.trim();
+  //   // console.log("Audio URL:", audioUrl);
+  //   res.json(audioUrl);
+  // });
 
 
 
