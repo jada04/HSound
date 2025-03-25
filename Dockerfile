@@ -1,13 +1,16 @@
-# Temel olarak Node.js içeren bir imaj seçiyoruz
+# Node.js 20 içeren temel imaj
 FROM node:20
 
-# Python kurulumu için gerekli paketleri ekleyelim (Node.js imajında Python genellikle yüklü değil)
-RUN apt-get update && apt-get install -y python3 python3-pip
+# Gerekli sistem paketlerini kur: python3, pip ve ffmpeg
+RUN apt-get update && apt-get install -y python3 python3-pip ffmpeg
 
-# Uygulamanın çalışma dizinini oluşturuyoruz
+# Pip'i güncelle
+RUN pip3 install --upgrade pip
+
+# Çalışma dizinini oluştur
 WORKDIR /app
 
-# Node.js bağımlılıklarını kopyala ve yükle
+# Node.js bağımlılıklarını yükle
 COPY package*.json ./
 RUN npm install
 
@@ -18,5 +21,5 @@ RUN pip3 install -r requirements.txt
 # Uygulama kaynak kodunu kopyala
 COPY . .
 
-# Uygulamayı çalıştırmak için komutu belirleyelim
+# Uygulamayı çalıştır
 CMD ["node", "index.js"]
