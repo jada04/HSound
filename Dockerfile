@@ -1,18 +1,22 @@
-FROM node:18-bullseye
+# Temel olarak Node.js içeren bir imaj seçiyoruz
+FROM node:20
 
-# Sistemi güncelle ve python-is-python3 paketini yükle.
-RUN apt-get update && apt-get install -y python-is-python3
+# Python kurulumu için gerekli paketleri ekleyelim (Node.js imajında Python genellikle yüklü değil)
+RUN apt-get update && apt-get install -y python3 python3-pip
 
+# Uygulamanın çalışma dizinini oluşturuyoruz
 WORKDIR /app
 
-# package.json ve package-lock.json dosyalarını kopyala
+# Node.js bağımlılıklarını kopyala ve yükle
 COPY package*.json ./
+RUN npm install
 
-# Bağımlılıkları yükle (development bağımlılıklarını atlamak için --omit=dev kullanabilirsiniz)
-RUN npm ci --omit=dev
+# Python bağımlılıklarını yüklemek için requirements.txt dosyasını kopyala
+COPY requirements.txt ./
+RUN pip3 install -r requirements.txt
 
-# Projedeki tüm dosyaları kopyala
+# Uygulama kaynak kodunu kopyala
 COPY . .
 
-# Uygulamayı başlat (örneğin, index.js dosyası giriş noktasıysa)
+# Uygulamayı çalıştırmak için komutu belirleyelim
 CMD ["node", "index.js"]
