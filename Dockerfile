@@ -1,4 +1,4 @@
-# Node.js 20 içeren temel imaj
+# Node.js 20 içeren temel imajı kullanıyoruz
 FROM node:20
 
 # Gerekli sistem paketlerini kur: python3, pip, ffmpeg, build-essential, python3-dev
@@ -8,6 +8,9 @@ RUN apt-get update && apt-get install -y \
     ffmpeg \
     build-essential \
     python3-dev
+
+# Pip'i kaldırıp, yeniden kurarak güncelle
+RUN python3 -m pip uninstall -y pip && apt-get install -y python3-pip && python3 -m pip install --upgrade pip --no-cache-dir
 
 # Çalışma dizinini oluştur
 WORKDIR /app
@@ -23,5 +26,5 @@ RUN python3 -m pip install -r requirements.txt
 # Uygulama kaynak kodunu kopyala
 COPY . .
 
-# Uygulamayı çalıştır
+# Uygulamayı başlat (örneğin, index.js dosyası)
 CMD ["node", "index.js"]
