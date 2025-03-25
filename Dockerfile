@@ -4,8 +4,8 @@ FROM node:20
 # Gerekli sistem paketlerini kur: python3, pip ve ffmpeg
 RUN apt-get update && apt-get install -y python3 python3-pip ffmpeg
 
-# Pip'i güncelle
-RUN pip3 install --upgrade pip
+# Pip'i python3 modülü üzerinden güncelle
+RUN python3 -m pip install --upgrade pip
 
 # Çalışma dizinini oluştur
 WORKDIR /app
@@ -16,7 +16,7 @@ RUN npm install
 
 # Python bağımlılıklarını yüklemek için requirements.txt dosyasını kopyala
 COPY requirements.txt ./
-RUN pip3 install -r requirements.txt
+RUN python3 -m pip install -r requirements.txt
 
 # Uygulama kaynak kodunu kopyala
 COPY . .
