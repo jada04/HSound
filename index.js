@@ -36,28 +36,31 @@ app.get('/getStreamUrl', async (req, res) => {
       return res.status(404).json({ error: 'Stream URL bulunamadı' });
     }
 
-    // Gelen video URL'sinin çalışıp çalışmadığını kontrol etmek için HEAD isteği gönderelim.
+    // URL'nin streaming yapıp yapmadığını kontrol etmek için range isteği gönderiyoruz.
     let isWorking = false;
     let retryCount = 0;
     const maxRetries = 3;
 
     while (!isWorking && retryCount < maxRetries) {
       try {
-        const headRes = await axios.head(videoUrl);
-        if (headRes.status === 200) {
+        const rangeRes = await axios.get(videoUrl, {
+          headers: { Range: 'bytes=0-1' },
+          responseType: 'arraybuffer'
+        });
+        // Eğer status 206 (Partial Content) veya 200 (tam içerik) dönerse, URL streaming verebiliyor demektir.
+        if (rangeRes.status === 206 || rangeRes.status === 200) {
           isWorking = true;
         } else {
           retryCount++;
-          console.log(`Retry ${retryCount}: Status ${headRes.status}`);
+          console.log(`Retry ${retryCount}: Status ${rangeRes.status}`);
         }
       } catch (err) {
         retryCount++;
-        console.log(`Retry ${retryCount}: Error in HEAD request: ${err.message}`);
+        console.log(`Retry ${retryCount}: Error in range request: ${err.message}`);
       }
     }
 
     if (!isWorking) {
-      // Eğer belirlenen denemelerde çalışmıyorsa, hata döndürüyoruz.
       return res.status(500).json({ error: 'Stream URL çalışmıyor, lütfen tekrar deneyin.' });
     }
 
